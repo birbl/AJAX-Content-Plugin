@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-au" lang="en-au" dir="ltr">
+        <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link type="text/css" rel="stylesheet" href="ajax-content-plugin.css" />
+    <script src=' https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js ' type='text/javascript'></script>
+    <script src='ajax-content-plugin.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      $(document).ready(function() {
+/***********************************************************************/     
+/*******************************CONTENTS********************************/      
+/***********************************************************************/
+
+/* 1. Introduction
+ * 2. Plugin Configuration
+ * 3. Plugin Examples
+ */
+
+/***********************************************************************/     
+/****************************1 INTRODUCTION*****************************/      
+/***********************************************************************/
+
+/* This plugin was designed to make it easier to retrieve, place and manipulate   
+ * specific content, whether it comes from a local source (it's on the current page)
+ * or whether it comes from a remote source (it's on an external page). And it
+ * adds the capacity to automatically place this content into a modal or relative
+ * to a specified div (for example, below this div, above it, to its left, or to its right).
+ *
+ * The plugin takes a selector (which can be a link or any div on the current page)
+ * and allows you to reconfigure its default behaviour. You can easily specify
+ * how this behaviour should trigger (for example, on hover or click). You can
+ * specify which content it should move into a modal, or which div this content should
+ * appear beside. 
+ *
+ * For remote content, the plugin makes an AJAX call and retrieves the element of
+ * your choice (this is specifed in the 'child_element' option). It can likewise be
+ * placed into either a modal or a specified target.
+ */
+
+/***********************************************************************/     
+/*************************2 PLUGIN CONFIGURATION************************/      
+/***********************************************************************/
+
+/* 1) Take a selector of your choice and add .ajax_content() to it.
+ * Example: $('#selector').ajax_content();   
+ *
+ * 2) To trigger the event on click or hover, set the necessary option with trigger_event.
+ * Example: triger_event : 'click'
+ * 
+ * 3) When working with local content (repositiong divs on the current page), use
+ * source_element to specify the the div that will be manipulated by the plugin.
+ * Example: source_element : '#source-tester'
+ *
+ * 4) To specify where you want this source_element to appear, use target_element.
+ * If target_element is not set, the plugin will assume you want this source_element
+ * to appear within a modal and will consequently perform this action for you.
+ * Example A: target_element : '#content-target' (places source_element within #content-target)
+ * Example B: target_element : '', or not set (places source_element within a modal)
+ *
+ * 5) To specify where the source_element should be anchored, use the anchor config settings.
+ * You can set the div source_element should be anchored to with element. And you can set its
+ * postition relative to this div with position.
+ * Example: anchor:  {element : '#anchor-tester', position : 'right'}
+ *
+ * 6) When working with remote content (extracting divs from an extrenal page and placing
+ * them on the current page), specify the div you want to extract with the child_element option.
+ * Example: child_element: '#main'
+ *
+ * 7) When placing remote content into a modal, a target area or around an anchor, follow the
+ * same steps that accompany local content for this functionality
+ *
+ * 8) A spinner is automatically produced and centred with the javaScript when making
+ * an AJAX call. You can supply your own spinner. Simply change the AJAX content CSS to point
+ * to your spinner and set its width and height. You don't need to do anything else, as the
+ * JavaScript will automatically work with these new dimensions to centre it.
+ */
+
+/***********************************************************************/     
+/*************************2 PLUGIN CONFIGURATION************************/      
+/***********************************************************************/
+
+/* Use the following examples below as examples for all 6 scenarios that are
+ * possible with this plugin
+ */
+  
+/*---------------------------------------------------------------------*/     
+/*----------------------------LOCAL CONTENT----------------------------*/      
+/*---------------------------------------------------------------------*/
+
+        // EXAMPLE 1: Position local content within a non-modal
+
+        /*
+        $('#test-link').ajax_content({
+          source_element:  '#source-tester',
+          target_element:  '#content-target',
+          trigger_event:	 'click',
+        });
+        */
+        
+        // EXAMPLE 2: Position local content within a non-modal and anchor it
+
+        /*
+        $('#test-link').ajax_content({
+          source_element:  '#source-tester',
+          target_element:  '#content-target',
+          trigger_event:	 'click',
+          anchor:  {element : '#anchor-tester', position : 'right'},
+        });
+        */
+        
+        // EXAMPLE 3: Position local content within a modal
+        
+        /*
+        $('#test-link').ajax_content({
+          source_element:  '#source-tester',
+          trigger_event:	 'click'
+          
+        });
+        */
+
+/*---------------------------------------------------------------------*/        
+/*---------------------------REMOTE CONTENT----------------------------*/
+/*---------------------------------------------------------------------*/
+        
+        // EXAMPLE 4: Position remote content within a modal
+        /*
+        $('#page-link').ajax_content({
+          url: 		         'http://localhost/page.html', 
+          child_element:   '#main',
+          trigger_event:	 'click'
+          
+        });
+        */
+        
+        // EXAMPLE 5: Position remote content within a non-modal
+        
+        /*
+        $('#page-link').ajax_content({
+          url: 		         'http://localhost/page.html', 
+          child_element:   '#main',
+          target_element:  '#content-target',
+          trigger_event:	 'click',
+          
+        });
+        */
+        
+        // EXAMPLE 6: Position remote content within a non-modal and anchor it
+        /*
+        $('#page-link').ajax_content({
+          url: 		         'http://localhost/page.html', 
+          child_element:   '#main',
+          target_element:  '#content-target',
+          trigger_event:	 'click',
+          anchor:  {element : '#anchor-tester', position : 'right'},
+        });
+        */
+      });
+    </script>
+  </head>
+  <body>
+    <a href='http://google.com' id='test-link'>
+      test link
+    </a>
+
+    <div id="page-link-wrapper">
+    <a href='/page.html' id='page-link'>page link</a>
+    </div>
+
+
+    <div id='source-tester'>
+      <p>This is the content tester content</p>
+      <p class='blue'>This is the blue test content</p>
+    </div>
+    <div id='content-tester'>
+    </div>
+    <div id='content-target'>
+      
+    </div>
+    
+    <div id='anchor-tester'>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi</p>
+    </div>
+    
+  </body>
+</html>
