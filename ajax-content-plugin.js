@@ -9,7 +9,9 @@
 				url: 						 '', // the URL to retrieve content from on a remote server through ajax
 				source_element:  '', // the existing element on the page to retrieve content from.  If source and url are set, source takes precedence
 				
-				child_element:   '', // the element to retrieve from the content indicated above.  If blank, takes the entire content
+				parent_element:  '', // if multiple links link to the same content for your AJAX call, you can specify the parent under which they reside (this will save
+														 //	further AJAX calls being made from these links) 
+				child_element:   '', // the element to retrieve from the url indicated above.  If blank, takes the entire content
 				target_element:  '', // the element on the page to put the content into.  If this is empty, use the modal window
 				
 				trigger_event:	 'click', // the event that triggers the content load for this element.  Valid options are those defined by jQuery
@@ -18,7 +20,9 @@
 				anchor:  {
 					element :  '', // the element to which the source_element or child_element should be anchored, should the target_element be a non-modal
 					position : '', // the placement of the source_element in relation to the anchor element you've defined above. Accepted values are top, bottom, left, right
-				}
+					offset_x : 0, // use this to add an offset to your source_element along the x-axis (used with 'left' and 'right' positioned elements)
+					offset_y : 0, // use this to add an offset to your source_element along the y-axis (used with 'top' and 'bottom' positioned elements)
+				},
 					
 			};
 			
@@ -68,11 +72,15 @@
 				$('#ajax-content-overlay').fadeIn();
 				$('#ajax-content-modal').fadeIn();
 				$('#ajax-content-modal-close').fadeIn();
+				
+				// event to be triggered whenever a modal is shown:
+				$us.trigger("ajaxContentModal");
 			};
 			
 			/**
 			 * Assign the non_modal position if anchor has been set
 			 */
+			
 			us.position_non_modal = function() {						
 				
 				if (opts.anchor && opts.anchor.element && opts.anchor.position) {
@@ -87,16 +95,16 @@
 										
 					switch(opts.anchor.position) {
 						case 'right':
-							$(opts.target_element).css({right : '-' + width + 'px', top : '0px'});
+							$(opts.target_element).css({right : '-' + (width + opts.anchor.offset_x) + 'px', top : '0px'});
 							break;
 						case 'left':
-							$(opts.target_element).css({left : '-' + width + 'px', top : '0px'});
+							$(opts.target_element).css({left : '-' + (width + opts.anchor.offset_x) + 'px', top : '0px'});
 							break;
 						case 'top':
-							$(opts.target_element).css({top : '-' + height + 'px'});
+							$(opts.target_element).css({top : '-' + (height + opts.anchor.offset_y) + 'px'});
 							break;
 						case 'bottom':
-							$(opts.target_element).css({bottom : '-' + height + 'px'});
+							$(opts.target_element).css({bottom : '-' + (height + opts.anchor.offset_y) + 'px'});
 							break;
 						default:
 							alert('There was an error positioning your element. You must declare a position for your anchor element in the ajax content configuration for this element.');
@@ -110,6 +118,9 @@
 			us.show_non_modal = function() {
 				$(opts.target_element).html($us.data('ajax-content-html'));
 				us.position_non_modal();
+				
+				// event to be triggered whenever a non-modal is shown:
+				$us.trigger("ajaxContentNonModal");
 			};
 			
 			us.show_content = function() {
@@ -125,7 +136,13 @@
 				else {
 					// use our modal window
 					us.show_modal();
-				}				
+				}
+				
+				// fire the 'content shown' event
+				if (opts.onGetContent) {
+					var html = $us.data('ajax-content-html');
+					opts.onGetContent(html);
+				}
 			};
 
 			/**
@@ -135,6 +152,9 @@
 				$('#ajax-content-overlay').fadeOut();
 				$('#ajax-content-modal').fadeOut();
 				$('#ajax-content-modal-close').fadeOut();
+				
+				// event to be triggered whenever a modal is closed:
+				$us.trigger("ajaxContentModalClose");
 			};
 			
 			us.position_modal_spinner = function() {
@@ -200,7 +220,10 @@
 			 */
 			us.get_local_content = function() {
 				$us.data('ajax-content-html', $(opts.source_element).html());
-				us.show_content();		
+				us.show_content();
+				
+				// event to be triggered whenever local content is shown:
+				$us.trigger("ajaxContentLocalContent");
 			};
 			
 			/**
@@ -256,6 +279,12 @@
 			 * A DOM object
 			 */			
 			us.get_remote_content = function() {
+				if($us.hasClass('content-ajaxed') && !opts.target_element) {
+					// if the content has already been called with AJAX and is to be placed in a modal, just show it again in the modal rather than doing another AJAX call 
+					us.show_modal(); 
+					return;
+				}
+				
 				// If the content is to be placed in a modal, show the modal with spinner	
 				if (!opts.target_element) {
 						us.show_content()
@@ -273,6 +302,14 @@
 								$segment = $(opts.child_element, data);
 								html = $segment.html();
 								$('#ajax-content-modal-content').html(html).show();
+								// add a 'content-ajaxed' class to $us so that no further AJAX calls are made on $us (it will instead simply show and hide the retrieved content on the current page)
+								if (opts.parent_element && $us.is('a')) {								
+									$us.parents(opts.parent_element).find('a').addClass('content-ajaxed');
+								} else {
+									$us.addClass('content-ajaxed');
+								}
+								// event to be triggered at the end of a remote content call:
+								$us.trigger("ajaxContentRemoteData", data);
 							}
 						})						
 					} else {
@@ -285,7 +322,6 @@
 								}
 							},
 							ajaxStart : us.non_modal_spinner(),
-							ajaxStop :  $('.ajax-content-spinner').remove(),
 							dataType: 'html',
 							success :   function(data) {
 								$('.ajax-content-spinner-non-modal').hide();
@@ -293,6 +329,8 @@
 								html = $segment.html();
 								$(opts.target_element).html(html);
 								us.show_content();
+								// event to be triggered at the end of a remote content call:
+								$us.trigger("ajaxContentRemoteData", data);
 							}
 						})	
 					} 			
@@ -307,8 +345,7 @@
 			us.get_content = function() {
 				if (opts.source_element) {
 					us.get_local_content();
-				}
-				else {
+				} else {
 					us.get_remote_content();
 				}
 			};
@@ -318,6 +355,10 @@
 			 */
 			$us.bind(opts.trigger_event, function() {
 				us.get_content();
+				
+				// event to be triggered whenever ajax_content is initialised:
+				$us.trigger("init", $us);
+				
 				return false;
 			});
 			
