@@ -14,7 +14,8 @@
 
 /* 1. Introduction
  * 2. Plugin Configuration
- * 3. Plugin Examples
+ * 3. Callbacks
+ * 4. Plugin Examples
  */
 
 /***********************************************************************/     
@@ -81,9 +82,29 @@
  * need to change the width and height of the modal in the CSS - the plugin will automatically 
  * centre it no matter what its dimensions may be.
  */
+ 
+/***********************************************************************/     
+/*****************************3 CALLBACKS*******************************/      
+/***********************************************************************/
+
+/* You have several options for making callbacks after a particular event has fired. The following events are
+ * available for manipulation:
+ *    
+ * 1) init - this event is triggered on initialisation of the plugin - in other words, whenever someone clicks or hovers
+ * over your link that manipulates the local or remote content
+ *
+ * 2) ajaxContentRemoteData - this event is triggered whenever a successful AJAX call has been completed
+ *
+ * 3) ajaxContentLocalContent - this event is triggered after local content has been moved on the page
+ *
+ * 4) ajaxContentModalClose - this event is triggered after a user has closed the modal
+ *
+ * 5) ajaxContentModal - this event is triggered after a modal appears on the page
+ *
+ */
 
 /***********************************************************************/     
-/*************************2 PLUGIN CONFIGURATION************************/      
+/*************************4 PLUGIN CONFIGURATION************************/      
 /***********************************************************************/
 
 /* Download index.html, page.html, images, css and the plugin itself. Then use the examples 
