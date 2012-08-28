@@ -89,47 +89,12 @@
 /* Download index.html, page.html, images, css and the plugin itself. Then use the examples 
  * below as examples for all 6 scenarios that are possible with this plugin. 
  */
-  
-/*---------------------------------------------------------------------*/     
-/*----------------------------LOCAL CONTENT----------------------------*/      
-/*---------------------------------------------------------------------*/
-
-        // EXAMPLE 1: Position local content within a non-modal
-
-        /*
-        $('#test-link').ajax_content({
-          source_element:  '#source-tester',
-          target_element:  '#content-target',
-          trigger_event:	 'click',
-        });
-        */
-        
-        // EXAMPLE 2: Position local content within a non-modal and anchor it
-
-        /*
-        $('#test-link').ajax_content({
-          source_element:  '#source-tester',
-          target_element:  '#content-target',
-          trigger_event:	 'click',
-          anchor:  {element : '#anchor-tester', position : 'right'},
-        });
-        */
-        
-        // EXAMPLE 3: Position local content within a modal
-        
-        /*
-        $('#test-link').ajax_content({
-          source_element:  '#source-tester',
-          trigger_event:	 'click'
-          
-        });
-        */
 
 /*---------------------------------------------------------------------*/        
 /*---------------------------REMOTE CONTENT----------------------------*/
 /*---------------------------------------------------------------------*/
         
-        // EXAMPLE 4: Position remote content within a modal, automatically taking the href of the a link as the url
+        // EXAMPLE 1: Position remote content within a modal, automatically taking the href of the a link as the url
         /*
         $('#page-link a').ajax_content({ 
           child_element:   '#main',
@@ -138,7 +103,7 @@
         });
         */
         
-        // EXAMPLE 5: Position remote content within a non-modal
+        // EXAMPLE 2: Position remote content within a non-modal
         
         /*
         $('#page-link a').ajax_content({ 
@@ -149,7 +114,7 @@
         });
         */
         
-        // EXAMPLE 6: Position remote content within a non-modal and anchor it
+        // EXAMPLE 3: Position remote content within a non-modal and anchor it
         
         /*
         $('#page-link a').ajax_content({ 
@@ -159,6 +124,42 @@
           anchor:  {element : '#anchor-tester', position : 'right'},
         });
         */
+        
+/*---------------------------------------------------------------------*/     
+/*----------------------------LOCAL CONTENT----------------------------*/      
+/*---------------------------------------------------------------------*/
+
+        // EXAMPLE 4: Position local content within a non-modal
+
+        /*
+        $('#test-link').ajax_content({
+          source_element:  '#source-tester',
+          target_element:  '#content-target',
+          trigger_event:         'click',
+        });
+        */
+        
+        // EXAMPLE 5: Position local content within a non-modal and anchor it
+
+        /*
+        $('#test-link').ajax_content({
+          source_element:  '#source-tester',
+          target_element:  '#content-target',
+          trigger_event:	 'click',
+          anchor:  {element : '#anchor-tester', position : 'right'},
+        });
+        */
+        
+        // EXAMPLE 6: Position local content within a modal
+        
+        /*
+        $('#test-link').ajax_content({
+          source_element:  '#source-tester',
+          trigger_event:	 'click'
+          
+        });
+        */        
+        
       });
     </script>
   </head>
