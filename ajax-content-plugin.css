@@ -59,11 +59,9 @@
 }
 
 #ajax-content-spinner-wrapper {
-  background-color:#000;
   position: absolute;
   top: 0px;
   left: 0px;
-  opacity:0.5;
   height: 0px;
 }
 
