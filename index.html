@@ -23,9 +23,9 @@
 
 /* This plugin was designed to make it easier to retrieve, place and manipulate   
  * specific content, whether it comes from a local source (it's on the current page)
- * or whether it comes from a remote source (it's on an external page). And it
- * adds the capacity to automatically place this content into a modal or relative
- * to a specified div (for example, below this div, above it, to its left, or to its right).
+ * or whether it comes from a remote source (it's on an external page). It
+ * adds the capacity to automatically place this content into a modal or to place it relative
+ * to a specified div (for example, below it, above it, to its left, or to its right).
  *
  * The plugin takes a selector (which can be a link or any div on the current page)
  * and allows you to reconfigure its default behaviour. You can easily specify
@@ -48,7 +48,7 @@
  * 2) To trigger the event on click or hover, set the necessary option with trigger_event.
  * Example: triger_event : 'click'
  * 
- * 3) When working with local content (repositiong divs on the current page), use
+ * 3) When working with local content (repositioning divs on the current page), use
  * source_element to specify the the div that will be manipulated by the plugin.
  * Example: source_element : '#source-tester'
  *
@@ -56,16 +56,20 @@
  * If target_element is not set, the plugin will assume you want this source_element
  * to appear within a modal and will consequently perform this action for you.
  * Example A: target_element : '#content-target' (places source_element within #content-target)
- * Example B: target_element : '', or not set (places source_element within a modal)
+ * Example B: target_element : '' (or not set) (places source_element within a modal)
  *
  * 5) To specify where the source_element should be anchored, use the anchor config settings.
- * You can set the div source_element should be anchored to with element. And you can set its
- * postition relative to this div with position.
+ * You can set the div source_element should be anchored to with 'element'. And you can set its
+ * postition relative to this div with 'position'. 
  * Example: anchor:  {element : '#anchor-tester', position : 'right'}
+ * Tips: there are other options you can pass in here, such as offset, that can be found in the .js file,
+ * with accompanying helper text beside each one to explain their purpose
  *
- * 6) When working with remote content (extracting divs from an extrenal page and placing
+ * 6) When working with remote content (extracting divs from an external page and placing
  * them on the current page), specify the div you want to extract with the child_element option.
  * Example: child_element: '#main'
+ * Tips: You can specify the exact url that contains this content with the 'url' option, otherwise 
+ * ajax_content will automatically take the 'href' as the url if your selector is a link.
  *
  * 7) When placing remote content into a modal, a target area or around an anchor, follow the
  * same steps that accompany local content for this functionality
@@ -73,15 +77,17 @@
  * 8) A spinner is automatically produced and centred with the javaScript when making
  * an AJAX call. You can supply your own spinner. Simply change the AJAX content CSS to point
  * to your spinner and set its width and height. You don't need to do anything else, as the
- * JavaScript will automatically work with these new dimensions to centre it.
+ * JavaScript will automatically work with these new dimensions to centre it. Likewise, you only 
+ * need to change the width and height of the modal in the CSS - the plugin will automatically 
+ * centre it no matter what its dimensions may be.
  */
 
 /***********************************************************************/     
 /*************************2 PLUGIN CONFIGURATION************************/      
 /***********************************************************************/
 
-/* Use the following examples below as examples for all 6 scenarios that are
- * possible with this plugin
+/* Download index.html, page.html, images, css and the plugin itself. Then use the examples 
+ * below as examples for all 6 scenarios that are possible with this plugin. 
  */
   
 /*---------------------------------------------------------------------*/     
@@ -123,12 +129,11 @@
 /*---------------------------REMOTE CONTENT----------------------------*/
 /*---------------------------------------------------------------------*/
         
-        // EXAMPLE 4: Position remote content within a modal
+        // EXAMPLE 4: Position remote content within a modal, automatically taking the href of the a link as the url
         /*
-        $('#page-link').ajax_content({
-          url: 		         'http://localhost/page.html', 
+        $('#page-link a').ajax_content({ 
           child_element:   '#main',
-          trigger_event:	 'click'
+          trigger_event:   'click'
           
         });
         */
@@ -136,22 +141,21 @@
         // EXAMPLE 5: Position remote content within a non-modal
         
         /*
-        $('#page-link').ajax_content({
-          url: 		         'http://localhost/page.html', 
+        $('#page-link a').ajax_content({ 
           child_element:   '#main',
           target_element:  '#content-target',
-          trigger_event:	 'click',
+          trigger_event:   'click',
           
         });
         */
         
         // EXAMPLE 6: Position remote content within a non-modal and anchor it
+        
         /*
-        $('#page-link').ajax_content({
-          url: 		         'http://localhost/page.html', 
+        $('#page-link a').ajax_content({ 
           child_element:   '#main',
           target_element:  '#content-target',
-          trigger_event:	 'click',
+          trigger_event:   'click',
           anchor:  {element : '#anchor-tester', position : 'right'},
         });
         */
