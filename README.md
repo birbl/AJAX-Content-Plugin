@@ -5,3 +5,8 @@ target zones, creating modals - and allowing considerable options for customisat
 
 Examples? Making an AJAX call and extracting a div from another page to be placed into a modal is as as simple as:
 
+$('#page-link a').ajax_content({
+child_element: '#main',
+trigger_event: 'click'
+});
+
